@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "*.cjson": "jsonc",
+        "*.wxss": "css",
+        "*.wxs": "javascript",
+        "*.go": "go",
+        "cstdio": "c",
+        "user.h": "c",
+        "stat.h": "c",
+        "types.h": "c",
+        "param.h": "c",
+        "proc.h": "c"
+    }
+}

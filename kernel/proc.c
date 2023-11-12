@@ -114,7 +114,10 @@ allocproc(void)
       release(&p->lock);
     }
   }
-  return 0;
+
+  // Zero initializes the tracemask for a new process
+  p->tracemask = 0;
+  return p;
 
 found:
   p->pid = allocpid();
@@ -280,6 +283,8 @@ fork(void)
   if((np = allocproc()) == 0){
     return -1;
   }
+
+  np->tracemask = p->tracemask;
 
   // Copy user memory from parent to child.
   if(uvmcopy(p->pagetable, np->pagetable, p->sz) < 0){
@@ -653,4 +658,22 @@ procdump(void)
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
+}
+
+//  collect the number of processes
+uint64
+procnums(void)
+{
+  uint64 ret = 0;
+  struct proc *p;
+  for (p = proc; &proc[NPROC]; p++) 
+  {
+    acquire(&p->lock);
+    if (p->state != UNUSED)
+    {
+      ret++;
+    }
+    release(&p->lock);
+  }
+  return ret;
 }
